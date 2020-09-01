@@ -10,6 +10,7 @@ memeController.createMeme = async (req, res, next) => {
     let rawData = fs.readFileSync("memes.json");
     let memes = JSON.parse(rawData).memes;
     let { texts } = req.body;
+    console.log("tien check texts", texts)
     const meme = {};
     // Prepare data for the new meme
     meme.id = utilsHelper.generateRandomHexString(15);
@@ -18,7 +19,7 @@ memeController.createMeme = async (req, res, next) => {
     console.log(req.file);
     meme.outputMemePath = `${req.file.destination}/MEME_${
       meme.id
-    }.${meme.originalImage.split(".").pop()}`;
+      }.${meme.originalImage.split(".").pop()}`;
     if (texts) {
       if (!Array.isArray(texts)) texts = [texts];
       meme.texts = texts.map((text) => JSON.parse());
@@ -71,8 +72,7 @@ memeController.updateMeme = async (req, res, next) => {
     const meme = memes[index];
     let { texts } = req.body;
     if (texts) {
-      if (!Array.isArray(texts)) texts = [texts];
-      meme.texts = texts.map((text) => JSON.parse());
+      meme.texts = texts;
     } else {
       meme.texts = [];
     }
